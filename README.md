@@ -1,16 +1,68 @@
-# React + Vite
+# Othello (Reversi) React Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive implementation of the classic Othello (Reversi) board game built with React.
 
-Currently, two official plugins are available:
+This project was created as part of my frontend development learning journey to gain hands-on experience with React, component-based architecture, state management, and browser-based application development.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+* Complete Othello game rules
+* Move validation
+* Piece flipping logic
+* Turn management
+* Game state updates using React state
+* Interactive browser-based user interface
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Technologies Used
 
-## Expanding the ESLint configuration
+* React
+* JavaScript (ES6+)
+* HTML
+* CSS
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## What I Learned
+
+Through this project I practiced:
+
+* React component architecture
+* State management with useState
+* Event handling
+* Immutable state updates
+* Dynamic rendering and re-rendering
+* Debugging React applications
+* Browser DOM interaction
+
+## Future Improvements
+
+* Score tracking
+* Game restart functionality
+* Move history
+* AI opponent
+* TypeScript migration
+* Backend integration and multiplayer support
+
+## Running the Project
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+or
+
+```bash
+npm start
+```
+
+depending on your project setup.
+
+## Project Goal
+
+The primary goal of this project was to deepen my understanding of modern frontend development concepts and gain practical experience building an interactive React application from scratch.
