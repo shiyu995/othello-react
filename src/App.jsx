@@ -7,67 +7,80 @@ import * as logic from './gameLogic.js'
 
 
 export default function Board() {
-  // usestate
-  console.log("aaaa")
-  const [prompt, setprompt] = useState([{row:4, col:2}, {row:5, col:3}, {row:3, col:5},{row:2, col:4}])
-  const [board, setboard] = useState(()=>logic.initBoard(prompt))
-  const [xIsNext, setX] = useState(true)
-  
-
-  const squares=board.map((row, row_index)=>
-    <>
-      <div className="board-row">
+ 
+  const [game, setgame]=useState(()=>logic.createInitGame())
+  const squares=game.board.map((row, row_index)=>
+      <div className="board-row" key={row_index}>
         {
           row.map((col, col_index)=>
             <Square 
               key={`${row_index}-${col_index}`}
-              value={board[row_index][col_index]}
-              row={row_index} 
-              col={col_index} 
+              value={game.board[row_index][col_index]}
               onSquareClick={()=>handleClick(row_index, col_index)}/>
           )
         }
       </div>
-    </>
     );
   
-
   function handleClick(row_index, col_index){
-    // use state
-    if (board[row_index][col_index]!='*'){
+  
+    if (game.board[row_index][col_index]!='*' || game.gameover){
       return
     }
-    const newBoard = board.map(row => [...row]);
-    const { cur, opp } = xIsNext ? {cur:'X', opp:'O'}:{cur:'O', opp:'X'}
+    const newBoard = game.board.map(row => [...row]);
+    const { cur, next } = game.turn=='X' ? {cur:'X', next:'O'}:{cur:'O', next:'X'}
     newBoard[row_index][col_index]=cur
 
-    const directions=[
-      [-1, 0],  // up
-      [1, 0],   // down
-      [0, -1],  // left
-      [0, 1],   // right
-      [-1, -1], // left up
-      [-1, 1],  // right up
-      [1, -1],  // left down
-      [1, 1],   // right down
-    ]
+    let ends=game.gameover
 
     logic.cleanBoard(newBoard)
-    logic.flipBoard(newBoard, row_index, col_index, cur, opp, directions)
-    const newPrompt=logic.getNextMoves(newBoard, cur, opp, directions)
+    logic.flipBoard(newBoard, row_index, col_index, cur, next)
+
+    let newPrompt=logic.getNextMoves(newBoard, cur, next)
+
+    let nextPlayer=next
+    if (newPrompt.length==0){
+      nextPlayer=cur
+      newPrompt = logic.getNextMoves(newBoard, next, cur)
+      if (newPrompt.length==0){
+        console.log("Game ends")
+        ends=true
+      }
+    }
     
-    setX(!xIsNext)
-    setboard(newBoard)
-    setprompt(newPrompt)
+    setgame({
+      board: newBoard,
+      prompt: newPrompt,
+      turn: nextPlayer,
+      gameover:ends
+    })
   }
 
-
-  return squares
+  let gameInfo=null
+  const {x_num, o_num} = logic.calculatePieces(game.board)
+  if (game.gameover){
+    let winner;
+    if (x_num > o_num) winner = 'X';
+    else if (o_num > x_num) winner = 'O';
+    else winner = 'Draw';
+    gameInfo = `Game Over! ${winner} wins! | X:${x_num} O:${o_num}`
+  }   
+  else{
+    gameInfo = `Turn: ${game.turn} | X:${x_num} O:${o_num}`
+  }
+    
+  function handleReset(){
+    setgame(logic.createInitGame())
+  }
+  return <>
+  <div>{gameInfo}</div>
+  {squares}
+  <button onClick={handleReset}>restart</button>
+  </>
 }
 
 
-function Square({value, row, col, onSquareClick}) {
+function Square({value, onSquareClick}) {
   return <button className="square" onClick={onSquareClick}>{value}</button>;
 }
 
-// export default App
